@@ -1,0 +1,12 @@
+---
+title: "Homework 3"
+author: "Wuraola Olawole"
+date: "10/8/2020"
+output: github_document
+---
+
+
+
+
+
+
