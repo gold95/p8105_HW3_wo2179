@@ -169,3 +169,54 @@ ny_df =
 
 The most common values of snowfall are ` r ny_df %>% count()` because these are the frequently observed values across most of the stations within the same time frame.
 
+## Part b
+```{r}
+
+  ny_df %>%
+    select(id, year, month, tmax) %>%
+      filter(month %in% c("01", "07")) %>%
+        group_by(id, year, month) %>%
+          summarize(mean_tmax = mean(tmax)) %>%
+ggplot( aes(x = year , y = mean_tmax)) +
+  geom_point() + geom_line() + geom_smooth(se = FALSE) + 
+    facet_grid(~ month) +
+  labs(
+    title = "Average tmax per year of ny_noaa in January and July",
+    x = "Year",
+    y = "Average maximum temperature (C)",
+    caption = "Data from ny_noaa"
+  ) 
+  
+```
+On a whole, there is an observable difference in the average maximum temperature between January and July in all the years being observed. Also, this plot as a fluctuating trend and contains some outliers. More outliers are observed in July than in January.
+
+## Part c
+```{r}
+plot_1 =
+        ny_df %>%
+          ggplot( aes(x = tmin , y = tmax)) +
+            geom_hex() +
+    labs(
+          title = "tmax vs tmin in ny_noaa from 1981 to 2010",
+            x = "tmin (c)",
+            y = "tmax (C)"
+        )
+
+plot_2 =
+        ny_df %>%
+          filter(snow > 0 & snow < 100) %>%
+            ggplot( aes(x = year , y = snow)) +
+              geom_violin(aes(fill = year)) +
+                stat_summary(fun = "median", color = "red") +
+        labs(
+              title = "Snowfall < 100 mm per year",
+              x = "Year",
+              y = "Snowfall (mm)"
+        )
+
+plot_1 + plot_2
+```
+
+
+
+
