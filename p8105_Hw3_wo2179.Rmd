@@ -107,3 +107,36 @@ accel_df
 
 The resulting dataset has `r nrow (accel_df)` rows and `r ncol(accel_df)` columns There are `r ncol(accel_df)` variables in this dataset. This dataset contains a recorded data of the activity count of a 63 year old man on an accelerometer over 24 hour period (measured in minutes) over 7 days and 5 weeks in all. The observations made in this data corresponds to the activity count per minutes of the day over 35 days.
 
+## Part b
+
+```{r}
+  accel_df %>%
+    group_by(week, day) %>%
+      summarize(across(activity_count:minute, mean)) %>%
+knitr::kable()
+```
+
+From this table, it can be observed that the activity count are never constant, and there is more activity count on sundays and certain days of the week. The least activity count seem to be observed on saturdays. In some weeks he is more active than in others.
+
+## Part c
+
+```{r}
+
+accel_df %>%
+ggplot( aes(x = minute , y = activity_count, color = day)) + 
+  geom_point() + geom_line() +
+  labs(
+    title = "24 hour Activity count of an Accelerometer",
+    x = "Minutes of the day",
+    y = "Activity count",
+    caption = "Data from an accelerometer"
+  ) +
+scale_color_viridis() + theme_bw() +
+  viridis::scale_color_viridis(
+    name = "Days of the week", 
+    discrete = TRUE
+  )
+```
+
+From this plot, the activity count begins low (midnight) and increases as the day progresses. It ebbs later in the day (towards night time). It can also be observed that as a whole, he is more active on sundays and certain weekdays. Across the weeks, he is consistently least active on saturdays.
+
