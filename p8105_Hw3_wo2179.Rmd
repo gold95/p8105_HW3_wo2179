@@ -140,3 +140,32 @@ scale_color_viridis() + theme_bw() +
 
 From this plot, the activity count begins low (midnight) and increases as the day progresses. It ebbs later in the day (towards night time). It can also be observed that as a whole, he is more active on sundays and certain weekdays. Across the weeks, he is consistently least active on saturdays.
 
+
+# Problem 3
+
+Do some data cleaning. Create separate variables for year, month, and day. Ensure observations for temperature, precipitation, and snowfall are given in reasonable units.
+
+## Part a
+
+```{r}
+
+data("ny_noaa")
+```
+
+```{r}
+
+ny_df =
+  ny_noaa %>%
+    janitor::clean_names() %>%
+      separate(col = date, into = c("year", "month", "day"), sep = "-") %>%
+  mutate(
+          tmax = as.numeric(tmax),
+            tmax = tmax / 10 ,
+              tmin = as.numeric(tmin),
+                tmin = tmin / 10,
+                  prcp = prcp / 10
+)
+```
+
+The most common values of snowfall are ` r ny_df %>% count()` because these are the frequently observed values across most of the stations within the same time frame.
+
