@@ -70,4 +70,40 @@ instacart %>%
 		values_from = mean_hour
 	)
 ```
+# problem 2
+
+## Part a
+
+Read dataset and tidy! 
+```{r}
+accel_df =
+          read_csv(
+		                "./Data_set/accel_data.csv") %>% 
+    janitor::clean_names() %>%
+  pivot_longer(activity_1:activity_1440,
+                   names_to = "activity", 
+                   values_to = "activity_count") %>%
+  separate(col = activity, into = c("activity", "minute"), sep = "_") %>%
+    select(-activity) %>%
+     mutate(
+       minute = as.numeric(minute),
+       day = as_factor(day), 
+        day = fct_relevel(day, "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
+       wkday_wkend = recode(day, Sunday = "weekend", Saturday = "weekend", .default = "weekday" ),
+       ) %>%
+  arrange(week,day)
+
+```
+
+```{r}
+accel_df =
+          accel_df %>%
+            mutate(
+                  day_id = cumsum(!duplicated(accel_df[1:2]))
+  )
+
+accel_df
+```
+
+The resulting dataset has `r nrow (accel_df)` rows and `r ncol(accel_df)` columns There are `r ncol(accel_df)` variables in this dataset. This dataset contains a recorded data of the activity count of a 63 year old man on an accelerometer over 24 hour period (measured in minutes) over 7 days and 5 weeks in all. The observations made in this data corresponds to the activity count per minutes of the day over 35 days.
 
